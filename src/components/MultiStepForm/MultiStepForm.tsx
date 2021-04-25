@@ -6,24 +6,22 @@ interface MultiStepFormProps {
   activeStep: number
   children: React.ReactNode
   steps: string[]
-  handleReset: () => void
+  isSubmitting: boolean
   handleBack: () => void
   handleNext: () => void
   handleSubmit: () => void
 }
 
-const MultiStepForm = ({ activeStep, children, steps, handleReset, handleBack, handleNext, handleSubmit }: MultiStepFormProps) => {
+const MultiStepForm = ({ activeStep, children, steps, handleBack, handleSubmit, isSubmitting }: MultiStepFormProps) => {
   const childrenArray = React.Children.toArray(children)
   const currentChild = childrenArray[ activeStep ];
-  
   
   return (
     <form onSubmit={handleSubmit} className="multi-stepform">
       {currentChild}
       <StepActionButtons
-        handleReset={handleReset}
+        isSubmitting={isSubmitting}
         handleBack={handleBack}
-        handleNext={handleNext}
         steps={steps}
         activeStep={activeStep}
       />

@@ -8,11 +8,11 @@ import BankInfoForm from "../BankInfoForm/BankInfoForm";
 import { Formik } from 'formik';
 
 import './app.scss';
+import Completed from "../Completed/Completed";
 
 function getSteps() {
   return ['Select campaign settings', 'Create an ad group', 'Create an ad'];
 }
-
 
 const initialFormValues = {
   firstName: "",
@@ -22,8 +22,12 @@ const initialFormValues = {
   description: ""
 };
 
+const sleep = (time: number) => new Promise((acc) => setTimeout(acc, time));
+
+
 function App() {
   const [activeStep, setActiveStep] = useState(0);
+  const [isCompleted, setIsCompleted] = useState(false);
   const steps = getSteps();
   
   const handleNext = () => {
@@ -34,40 +38,49 @@ function App() {
     setActiveStep((prevActiveStep) => prevActiveStep - 1);
   };
   
-  const handleReset = () => {
-    setActiveStep(0);
-  };
+  function isLastStep() {
+    return activeStep === 2;
+  }
   
-  const onSubmit = (values: submitInterface) => {
-    console.log(values);
-  };
+  const onSubmit = async (values: submitInterface) => {
+    if ( isLastStep() ) {
+      await sleep(3000);
+      setIsCompleted(true);
+      console.log(values);
+    } else {
+      handleNext();
+    }
+  }
   
   return (
     <div className="App">
       <Navbar/>
-      <Steps
-        activeStep={activeStep}
-        steps={steps}
-      />
-      
-      <Formik initialValues={initialFormValues} onSubmit={onSubmit}>
-        {({ handleSubmit, values, handleChange }) => {
-          return (
-            <MultiStepForm
-              steps={steps}
-              handleReset={handleReset}
-              handleBack={handleBack}
-              handleNext={handleNext}
-              activeStep={activeStep}
-              handleSubmit={handleSubmit}
-            >
-              <UserInfoForm handleChange={handleChange} values={values}/>
-              <BankInfoForm handleChange={handleChange} values={values}/>
-              <OtherInfoForm handleChange={handleChange} values={values}/>
-            </MultiStepForm>
-          )
-        }}
-      </Formik>
+      {isCompleted ? <Completed/> : ( <>
+        
+        <Steps
+          activeStep={activeStep}
+          steps={steps}
+        />
+        
+        <Formik initialValues={initialFormValues} onSubmit={onSubmit}>
+          {({ isSubmitting, handleSubmit, values, handleChange }) => {
+            return (
+              <MultiStepForm
+                steps={steps}
+                handleBack={handleBack}
+                handleNext={handleNext}
+                activeStep={activeStep}
+                handleSubmit={handleSubmit}
+                isSubmitting={isSubmitting}
+              >
+                <UserInfoForm handleChange={handleChange} values={values}/>
+                <BankInfoForm handleChange={handleChange} values={values}/>
+                <OtherInfoForm handleChange={handleChange} values={values}/>
+              </MultiStepForm>
+            )
+          }}
+        </Formik>
+      </> )}
     </div>
   );
 }
