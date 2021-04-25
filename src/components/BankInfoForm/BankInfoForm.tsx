@@ -1,6 +1,7 @@
 import * as React from 'react';
 import TextField from '@material-ui/core/TextField';
 import Formik from "formik";
+import './bank-info-form.scss';
 
 
 interface BankInfoFormProps {
@@ -12,7 +13,7 @@ interface BankInfoFormProps {
 const BankInfoForm = ({ values, errors, handleChange }: BankInfoFormProps) => {
   const { bankName, bankAmount } = values;
   return (
-    <div className="user-info-form">
+    <div className="bank-info-form">
       <TextField
         error={Boolean(errors.bankName)}
         helperText={errors.bankName}
@@ -21,6 +22,7 @@ const BankInfoForm = ({ values, errors, handleChange }: BankInfoFormProps) => {
         name="bankName"
         id="bank-name"
         label="Bank Name"
+        autoFocus
       />
       <TextField
         error={Boolean(errors.bankAmount)}

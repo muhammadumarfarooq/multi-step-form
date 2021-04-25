@@ -78,38 +78,39 @@ function App() {
   }
   
   return (
-    <div className="App">
+    <div className="app">
       <Navbar/>
       {isCompleted ? <Completed/> : ( <>
         
-        <Steps
-          activeStep={activeStep}
-          steps={steps}
-        />
-        
-        <Formik
-          validationSchema={getValidationSchema(activeStep)}
-          initialValues={initialFormValues}
-          onSubmit={onSubmit}
-        >
-          {({ isSubmitting, handleSubmit, values, handleChange, errors }) => {
-            console.log(errors);
-            return (
-              <MultiStepForm
-                steps={steps}
-                handleBack={handleBack}
-                handleNext={handleNext}
-                activeStep={activeStep}
-                handleSubmit={handleSubmit}
-                isSubmitting={isSubmitting}
-              >
-                <UserInfoForm handleChange={handleChange} errors={errors} values={values}/>
-                <BankInfoForm handleChange={handleChange} errors={errors} values={values}/>
-                <OtherInfoForm handleChange={handleChange} values={values}/>
-              </MultiStepForm>
-            )
-          }}
-        </Formik>
+        <div className="app--step-form-wrapper">
+          <Steps
+            activeStep={activeStep}
+            steps={steps}
+          />
+          <Formik
+            validationSchema={getValidationSchema(activeStep)}
+            initialValues={initialFormValues}
+            onSubmit={onSubmit}
+          >
+            {({ isSubmitting, handleSubmit, values, handleChange, errors }) => {
+              console.log(errors);
+              return (
+                <MultiStepForm
+                  steps={steps}
+                  handleBack={handleBack}
+                  handleNext={handleNext}
+                  activeStep={activeStep}
+                  handleSubmit={handleSubmit}
+                  isSubmitting={isSubmitting}
+                >
+                  <UserInfoForm handleChange={handleChange} errors={errors} values={values}/>
+                  <BankInfoForm handleChange={handleChange} errors={errors} values={values}/>
+                  <OtherInfoForm handleChange={handleChange} values={values}/>
+                </MultiStepForm>
+              )
+            }}
+          </Formik>
+        </div>
       </> )}
     </div>
   );

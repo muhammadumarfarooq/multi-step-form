@@ -15,7 +15,7 @@ const OtherInfoForm = ({ values, handleChange }: OtherInfoFormProps) => {
         onChange={handleChange}
         name="description"
         id="description"
-        label="Description"/>
+        label="Description (Optional)"/>
     </div>
   );
 }

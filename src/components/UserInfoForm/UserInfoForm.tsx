@@ -1,6 +1,7 @@
 import * as React from 'react';
 import TextField from '@material-ui/core/TextField';
 import Formik from 'formik';
+import './user-info-form.scss';
 
 interface UserInfoFormProps {
   values: submitInterface
@@ -20,6 +21,7 @@ const UserInfoForm = ({ values, errors, handleChange }: UserInfoFormProps) => {
         name="firstName"
         id="first-name"
         label="First Name"
+        autoFocus
       />
       
       <TextField
