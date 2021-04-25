@@ -3,19 +3,6 @@ import Typography from "@material-ui/core/Typography";
 import Button from "@material-ui/core/Button";
 import { makeStyles } from "@material-ui/core/styles";
 
-function getStepContent(step: number) {
-  switch (step) {
-    case 0:
-      return 'Select campaign settings...';
-    case 1:
-      return 'What is an ad group anyways?';
-    case 2:
-      return 'This is the bit I really care about!';
-    default:
-      return 'Unknown step';
-  }
-}
-
 interface StepActionButtonsProps {
   activeStep: number
   steps: string[]
@@ -43,13 +30,12 @@ const StepActionButtons = ({ activeStep, steps, handleReset, handleBack, handleN
           <Typography className={classes.instructions}>
             All steps completed - you&apos;re finished
           </Typography>
-          <Button onClick={handleReset} className={classes.button}>
+          <button type="submit" className={classes.button}>
             Reset
-          </Button>
+          </button>
         </div>
       ) : (
         <div>
-          <Typography className={classes.instructions}>{getStepContent(activeStep)}</Typography>
           <div>
             <Button disabled={activeStep === 0} onClick={handleBack} className={classes.button}>
               Back
