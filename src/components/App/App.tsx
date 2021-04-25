@@ -6,6 +6,7 @@ import UserInfoForm from "../UserInfoForm/UserInfoForm";
 import OtherInfoForm from "../OtherInfoForm/OtherInfoForm";
 import BankInfoForm from "../BankInfoForm/BankInfoForm";
 import { Formik } from 'formik';
+import * as Yup from 'yup';
 
 import './app.scss';
 import Completed from "../Completed/Completed";
@@ -24,6 +25,30 @@ const initialFormValues = {
 
 const sleep = (time: number) => new Promise((acc) => setTimeout(acc, time));
 
+const getValidationSchema = (activeStep: number) => {
+  switch (activeStep) {
+    case 0:
+      return Yup.object().shape({
+        firstName: Yup.string()
+          .min(3, "First name should be greater than 3 characters")
+          .required('Fist name is required'),
+        lastName: Yup.string()
+          .min(3, "Last name should be greater than 3 characters")
+          .required('Fist name is required'),
+      })
+    case 1:
+      return Yup.object().shape({
+        bankName: Yup.string()
+          .min(3, "First name should be greater than 3 characters")
+          .required('Fist name is required'),
+        bankAmount: Yup.string()
+          .min(3, "Last name should be greater than 3 characters")
+          .required('Fist name is required'),
+      })
+    default:
+      return;
+  }
+}
 
 function App() {
   const [activeStep, setActiveStep] = useState(0);
@@ -62,8 +87,13 @@ function App() {
           steps={steps}
         />
         
-        <Formik initialValues={initialFormValues} onSubmit={onSubmit}>
-          {({ isSubmitting, handleSubmit, values, handleChange }) => {
+        <Formik
+          validationSchema={getValidationSchema(activeStep)}
+          initialValues={initialFormValues}
+          onSubmit={onSubmit}
+        >
+          {({ isSubmitting, handleSubmit, values, handleChange, errors }) => {
+            console.log(errors);
             return (
               <MultiStepForm
                 steps={steps}
@@ -73,8 +103,8 @@ function App() {
                 handleSubmit={handleSubmit}
                 isSubmitting={isSubmitting}
               >
-                <UserInfoForm handleChange={handleChange} values={values}/>
-                <BankInfoForm handleChange={handleChange} values={values}/>
+                <UserInfoForm handleChange={handleChange} errors={errors} values={values}/>
+                <BankInfoForm handleChange={handleChange} errors={errors} values={values}/>
                 <OtherInfoForm handleChange={handleChange} values={values}/>
               </MultiStepForm>
             )
